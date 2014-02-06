@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 public class DatabaseReaderConsumer extends BlockingEnvelopeMap
 {
@@ -45,19 +46,29 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
                                 final DatabaseReaderParameters parameters)
       throws SQLException, ClassNotFoundException
   {
+    this.systemStreamPartition = new SystemStreamPartition(systemName, outputStreamName, new Partition(0));
+
+    // Formulate database URL from parameters
     final String databaseUrl =
-        "jdbc:" + parameters.getDbmsType() +
+        "jdbc:" + parameters.getDbmsType().toString() +
         "://" + parameters.getHost() +
         ":" + parameters.getPort() +
         "/" + parameters.getDatabaseName();
+    System.out.println(databaseUrl);
 
     Class.forName(parameters.getDbmsType().getDriver());
 
-    this.databaseConnection = DriverManager
-        .getConnection(databaseUrl, parameters.getUsername(), parameters.getPassword());
+    // Handle username and password parameters
+    final Properties properties = new Properties();
+    properties.put("user", parameters.getUsername());
+    properties.put("password", parameters.getPassword());
 
+    // Make database connection and get statement
+    System.out.println("before conn");
+    this.databaseConnection = DriverManager.getConnection(databaseUrl, properties);
+    System.out.println("after conn");
     this.statement = databaseConnection.createStatement();
-    this.systemStreamPartition = new SystemStreamPartition(systemName, outputStreamName, new Partition(0));
+    System.out.println("after statement");
   }
 
   @Override

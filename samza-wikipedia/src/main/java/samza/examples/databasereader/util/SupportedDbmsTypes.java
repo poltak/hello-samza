@@ -33,7 +33,8 @@ public enum SupportedDbmsTypes
     this.driver = driver;
   }
 
-  public String asString()
+  @Override
+  public String toString()
   {
     return value;
   }
@@ -53,7 +54,7 @@ public enum SupportedDbmsTypes
   public static SupportedDbmsTypes getTypeFromString(final String dbmsType)
       throws InvalidSystemParametersException
   {
-    if (dbmsType.equals(MYSQL.asString()))
+    if (dbmsType.equals(MYSQL.toString()))
     {
       return MYSQL;
     }
