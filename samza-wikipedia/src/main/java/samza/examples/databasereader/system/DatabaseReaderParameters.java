@@ -18,7 +18,6 @@
  */
 package samza.examples.databasereader.system;
 
-import samza.examples.databasereader.util.InvalidDbmsTypeException;
 import samza.examples.databasereader.util.InvalidSystemParametersException;
 import samza.examples.databasereader.util.SupportedDbmsTypes;
 
@@ -30,22 +29,23 @@ public class DatabaseReaderParameters
   private static final int PORT_LOWER_BOUND = 1;
   private static final int PORT_UPPER_BOUND = 50000;
 
-  private final String host;
-  private final int port;
-  private final String username;
-  private final String password;
+  private final String             host;
+  private final int                port;
+  private final String             username;
+  private final String             password;
   private final SupportedDbmsTypes dbmsType;
-  private final String databaseName;
+  private final String             databaseName;
 
   /**
    * Constructs a new aggregate object containing all user specified system parameters.
+   *
    * @param host DNS resolvable hostname of the database (or IP address).
    * @param port Port through which access to the database is made.
    * @param username User with database access' username. Optional.
    * @param password User with database access' password. Optional.
    * @param dbmsType Type of DMBS as a string.
    * @param databaseName The name of the database.
-   * @throws InvalidDbmsTypeException Thrown if user specified DBMS type is not valid.
+   * @throws InvalidSystemParametersException Thrown if user specified DBMS type is not valid.
    */
   public DatabaseReaderParameters(final String host, final int port, final String username, final String password,
                                   final String dbmsType, final String databaseName)

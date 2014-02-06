@@ -18,9 +18,10 @@
  */
 package samza.examples.databasereader.system;
 
+import org.apache.samza.Partition;
+import org.apache.samza.system.IncomingMessageEnvelope;
+import org.apache.samza.system.SystemStreamPartition;
 import org.apache.samza.util.BlockingEnvelopeMap;
-import samza.examples.databasereader.util.InvalidDbmsTypeException;
-import samza.examples.databasereader.util.SupportedDbmsTypes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,15 +30,16 @@ import java.sql.Statement;
 
 public class DatabaseReaderConsumer extends BlockingEnvelopeMap
 {
-  private final Connection databaseConnection;
-  private final Statement  statement;
+  private final Connection            databaseConnection;
+  private final Statement             statement;
+  private final SystemStreamPartition systemStreamPartition;
 
   /**
    * Sets up the SystemConsumer for reading from the specified database.
    *
-   * @param systemName
-   * @param outputStreamName
-   * @param parameters
+   * @param systemName Name of this system.
+   * @param outputStreamName Name of the output stream upon which the database connection statement will be placed.
+   * @param parameters User defined system parameters for database connection.
    */
   public DatabaseReaderConsumer(final String systemName, final String outputStreamName,
                                 final DatabaseReaderParameters parameters)

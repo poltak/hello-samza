@@ -26,7 +26,7 @@ import org.apache.samza.system.SystemConsumer;
 import org.apache.samza.system.SystemFactory;
 import org.apache.samza.system.SystemProducer;
 import org.apache.samza.util.SinglePartitionSystemAdmin;
-import samza.examples.databasereader.util.InvalidDbmsTypeException;
+import samza.examples.databasereader.util.InvalidSystemParametersException;
 
 import java.sql.SQLException;
 
@@ -37,30 +37,10 @@ public class DatabaseReaderSystemFactory implements SystemFactory
    */
   private static final String OUTPUT_STREAM_NAME = "query-output";
 
-  /**
-   * Gets user specified system parameters from a StreamTask's config file.
-   * @param config Object allowing access to user specified config file.
-   * @param systemName Name of this system.
-   * @return A DatabaseReaderParameters object, constructed with all the user specified system parameters.
-   * @throws InvalidDbmsTypeException Thrown if user specifies invalid DMBS type in the config file.
-   */
-  private static DatabaseReaderParameters getParametersFromConfig(final Config config, final String systemName)
-      throws InvalidDbmsTypeException
-  {
-    final String host = config.get("systems." + systemName + ".host");
-    final int port = config.getInt("systems." + systemName + ".port");
-    final String username = config.get("systems." + systemName + ".username");
-    final String password = config.get("systems." + systemName + ".password");
-    final String dbmsType = config.get("systems." + systemName + ".dbms");
-    final String databaseName = config.get("systems." + systemName + ".dbname");
-
-    return new DatabaseReaderParameters(host, port, username, password, dbmsType, databaseName);
-  }
-
   @Override
   public SystemConsumer getConsumer(final String systemName, final Config config, final MetricsRegistry metricsRegistry)
   {
-    final DatabaseReaderParameters params = getParametersFromConfig(config, systemName);
+    final DatabaseReaderParameters params = getSystemParametersFromConfig(config, systemName);
 
     try
     {
@@ -86,5 +66,26 @@ public class DatabaseReaderSystemFactory implements SystemFactory
   public SystemAdmin getAdmin(final String systemName, final Config config)
   {
     return new SinglePartitionSystemAdmin();
+  }
+
+  /**
+   * Gets user specified system parameters from a StreamTask's config file.
+   *
+   * @param config Object allowing access to user specified config file.
+   * @param systemName Name of this system.
+   * @return A DatabaseReaderParameters object, constructed with all the user specified system parameters.
+   * @throws InvalidSystemParametersException Thrown if user specifies invalid DMBS type in the config file.
+   */
+  private static DatabaseReaderParameters getSystemParametersFromConfig(final Config config, final String systemName)
+      throws InvalidSystemParametersException
+  {
+    final String host = config.get("systems." + systemName + ".host");
+    final int port = config.getInt("systems." + systemName + ".port");
+    final String username = config.get("systems." + systemName + ".username");
+    final String password = config.get("systems." + systemName + ".password");
+    final String dbmsType = config.get("systems." + systemName + ".dbms");
+    final String databaseName = config.get("systems." + systemName + ".dbname");
+
+    return new DatabaseReaderParameters(host, port, username, password, dbmsType, databaseName);
   }
 }
