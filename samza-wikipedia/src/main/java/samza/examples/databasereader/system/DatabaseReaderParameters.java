@@ -53,7 +53,7 @@ public class DatabaseReaderParameters
   {
     if (port < PORT_LOWER_BOUND || port > PORT_UPPER_BOUND)
     {
-      throw new InvalidSystemParametersException();
+      throw new InvalidSystemParametersException("Specified TCP port out of range: " + port);
     }
 
     this.host = host;

@@ -45,19 +45,21 @@ public enum SupportedDbmsTypes
 
   /**
    * Given a string, if that string matches a valid DMBS type, that specific enumerated DBMS type is returned.
+   *
    * @param dbmsType String representing the DBMS type string value.
    * @return A valid enumerated DBMS type.
-   * @throws InvalidDbmsTypeException Thrown if given string does not match any valid DBMS type values.
+   * @throws InvalidSystemParametersException Thrown if given string does not match any valid DBMS type values.
    */
   public static SupportedDbmsTypes getTypeFromString(final String dbmsType)
-      throws InvalidDbmsTypeException
+      throws InvalidSystemParametersException
   {
     if (dbmsType.equals(MYSQL.asString()))
     {
       return MYSQL;
-    } else
+    }
+    else
     {
-      throw new InvalidDbmsTypeException();
+      throw new InvalidSystemParametersException("Unsupported DBMS type specified: " + dbmsType);
     }
   }
 }

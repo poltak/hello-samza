@@ -53,13 +53,24 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
 
     Class.forName(parameters.getDbmsType().getDriver());
 
-    databaseConnection = DriverManager.getConnection(databaseUrl, parameters.getUsername(), parameters.getPassword());
-    statement = databaseConnection.createStatement();
+    this.databaseConnection = DriverManager
+        .getConnection(databaseUrl, parameters.getUsername(), parameters.getPassword());
+
+    this.statement = databaseConnection.createStatement();
+    this.systemStreamPartition = new SystemStreamPartition(systemName, outputStreamName, new Partition(0));
   }
 
   @Override
   public void start()
   {
+    try
+    {
+      put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, statement));
+    } catch (InterruptedException e)
+    {
+      e.printStackTrace();
+      stop();
+    }
   }
 
   @Override
