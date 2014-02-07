@@ -47,11 +47,11 @@ public class DatabaseReaderSystemFactory implements SystemFactory
       return new DatabaseReaderConsumer(systemName, OUTPUT_STREAM_NAME, params);
     } catch (SQLException e)
     {
-//      e.printStackTrace();
+      e.printStackTrace();
       return null;
     } catch (ClassNotFoundException e)
     {
-//      e.printStackTrace();
+      e.printStackTrace();
       return null;
     }
   }

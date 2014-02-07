@@ -79,7 +79,7 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
       put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, statement));
     } catch (InterruptedException e)
     {
-//      e.printStackTrace();
+      e.printStackTrace();
       stop();
     }
   }
@@ -92,7 +92,7 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
       databaseConnection.close();
     } catch (SQLException e)
     {
-//      e.printStackTrace();
+      e.printStackTrace();
     }
   }
 }
