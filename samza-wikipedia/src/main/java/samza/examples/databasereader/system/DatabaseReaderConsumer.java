@@ -48,6 +48,7 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
   {
     this.systemStreamPartition = new SystemStreamPartition(systemName, outputStreamName, new Partition(0));
 
+    System.out.println("before URL");
     // Formulate database URL from parameters
     final String databaseUrl =
         "jdbc:" + parameters.getDbmsType().toString() +

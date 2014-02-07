@@ -40,7 +40,9 @@ public class DatabaseReaderSystemFactory implements SystemFactory
   @Override
   public SystemConsumer getConsumer(final String systemName, final Config config, final MetricsRegistry metricsRegistry)
   {
+    System.err.println("before params");
     final DatabaseReaderParameters params = getSystemParametersFromConfig(config, systemName);
+    System.err.println("after params");
 
     try
     {
