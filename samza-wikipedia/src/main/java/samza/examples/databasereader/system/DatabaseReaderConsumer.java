@@ -48,16 +48,12 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
   {
     this.systemStreamPartition = new SystemStreamPartition(systemName, outputStreamName, new Partition(0));
 
-    System.out.println("before URL");
     // Formulate database URL from parameters
     final String databaseUrl =
         "jdbc:" + parameters.getDbmsType().toString() +
         "://" + parameters.getHost() +
         ":" + parameters.getPort() +
         "/" + parameters.getDatabaseName();
-    System.out.println(databaseUrl);
-
-    Class.forName(parameters.getDbmsType().getDriver());
 
     // Handle username and password parameters
     final Properties properties = new Properties();
@@ -65,33 +61,27 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
     properties.put("password", parameters.getPassword());
 
     // Make database connection and get statement
-    System.out.println("before conn");
     this.databaseConnection = DriverManager.getConnection(databaseUrl, properties);
-    System.out.println("after conn");
     this.statement = databaseConnection.createStatement();
-    System.out.println("after statement");
+  }
+
+  @Override
+  public void register(final SystemStreamPartition systemStreamPartition, final String startingOffset)
+  {
+    super.register(systemStreamPartition, startingOffset);
   }
 
   @Override
   public void start()
   {
-    Thread databaseReadingThread = new Thread(new Runnable()
+    try
     {
-      @Override
-      public void run()
-      {
-        try
-        {
-          put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, statement));
-        } catch (InterruptedException e)
-        {
-          e.printStackTrace();
-          stop();
-        }
-      }
-    });
-
-    databaseReadingThread.start();
+      put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, statement));
+    } catch (InterruptedException e)
+    {
+      e.printStackTrace();
+      stop();
+    }
   }
 
   @Override
@@ -104,11 +94,5 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
     {
       e.printStackTrace();
     }
-  }
-
-  @Override
-  public void register(final SystemStreamPartition systemStreamPartition, final String startingOffset)
-  {
-    super.register(systemStreamPartition, startingOffset);
   }
 }
