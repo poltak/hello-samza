@@ -55,6 +55,8 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
         ":" + parameters.getPort() +
         "/" + parameters.getDatabaseName();
 
+    Class.forName(parameters.getDbmsType().getDriver());
+
     // Handle username and password parameters
     final Properties properties = new Properties();
     properties.put("user", parameters.getUsername());
