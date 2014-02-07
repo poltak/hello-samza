@@ -96,4 +96,10 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
       e.printStackTrace();
     }
   }
+
+  @Override
+  public void register(final SystemStreamPartition systemStreamPartition, final String startingOffset)
+  {
+    super.register(systemStreamPartition, startingOffset);
+  }
 }
