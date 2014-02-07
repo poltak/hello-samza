@@ -23,10 +23,7 @@ import org.apache.samza.system.IncomingMessageEnvelope;
 import org.apache.samza.system.SystemStreamPartition;
 import org.apache.samza.util.BlockingEnvelopeMap;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 
 public class DatabaseReaderConsumer extends BlockingEnvelopeMap
@@ -55,6 +52,7 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
         ":" + parameters.getPort() +
         "/" + parameters.getDatabaseName();
 
+    // Call to load MySQL JDBC driver
     Class.forName(parameters.getDbmsType().getDriver());
 
     // Handle username and password parameters
