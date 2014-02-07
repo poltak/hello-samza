@@ -75,14 +75,23 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
   @Override
   public void start()
   {
-    try
+    Thread databaseReadingThread = new Thread(new Runnable()
     {
-      put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, statement));
-    } catch (InterruptedException e)
-    {
-      e.printStackTrace();
-      stop();
-    }
+      @Override
+      public void run()
+      {
+        try
+        {
+          put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, statement));
+        } catch (InterruptedException e)
+        {
+          e.printStackTrace();
+          stop();
+        }
+      }
+    });
+
+    databaseReadingThread.start();
   }
 
   @Override
