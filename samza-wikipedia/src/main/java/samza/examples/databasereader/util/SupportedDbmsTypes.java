@@ -21,7 +21,10 @@ package samza.examples.databasereader.util;
 public enum SupportedDbmsTypes
 {
   // Add supported DBMS types and their corresponding JDBC drivers here
-  MYSQL("mysql", "com.mysql.jdbc.Driver");
+  MYSQL("mysql", "com.mysql.jdbc.Driver"),
+  MARIA_DB("mariadb","org.mariadb.jdbc.Driver"),
+  SQLITE("sqlite", "org.sqlite.JDBC"),
+  MS_SQL_SERVER("mssqlserver", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
 
   private final String value;
@@ -57,6 +60,18 @@ public enum SupportedDbmsTypes
     if (dbmsType.equals(MYSQL.toString()))
     {
       return MYSQL;
+    }
+    else if (dbmsType.equals(MARIA_DB.toString()))
+    {
+      return MARIA_DB;
+    }
+    else if (dbmsType.equals(SQLITE.toString()))
+    {
+      return SQLITE;
+    }
+    else if (dbmsType.equals(MS_SQL_SERVER.toString()))
+    {
+      return MS_SQL_SERVER;
     }
     else
     {
