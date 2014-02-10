@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package samza.examples.wikipedia.task;
+package samza.examples.filereader.task;
 
 import org.apache.samza.system.IncomingMessageEnvelope;
 import org.apache.samza.system.OutgoingMessageEnvelope;
@@ -30,9 +30,9 @@ import samza.examples.wikipedia.util.InvalidMedicalDataException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class MedicalDataFeedStreamTask implements StreamTask
+public class FileReaderStreamTask implements StreamTask
 {
-  private static final SystemStream OUTPUT_STREAM       = new SystemStream("kafka", "medical-test");
+  private static final SystemStream OUTPUT_STREAM       = new SystemStream("kafka", "file-reader-test");
   private static final String       VALID_CSV_DELIMITER = ",";
   private static final String       VALID_TIME_FORMAT   = "hh:mm:ss";
   private static final int          VALID_NUM_FIELDS    = 7;

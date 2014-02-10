@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package samza.examples.wikipedia.task;
+package samza.examples.filereader.task;
 
 import org.apache.samza.system.IncomingMessageEnvelope;
 import org.apache.samza.system.OutgoingMessageEnvelope;
@@ -27,7 +27,7 @@ import org.apache.samza.task.StreamTask;
 import org.apache.samza.task.TaskCoordinator;
 import samza.examples.wikipedia.util.MedicalData;
 
-public class MedicalDataValidatorStreamTask implements StreamTask
+public class FileReaderValidatorStreamTask implements StreamTask
 {
   private static final SystemStream OUTPUT_STREAM = new SystemStream("kafka", "validation-result");
 
