@@ -52,7 +52,7 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
         ":" + parameters.getPort() +
         "/" + parameters.getDatabaseName();
 
-    // Call to load MySQL JDBC driver
+    // Call to load JDBC driver
     Class.forName(parameters.getDbmsType().getDriver());
 
     // Handle username and password parameters
