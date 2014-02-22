@@ -42,18 +42,14 @@ public class DatabaseReaderSystemFactory implements SystemFactory
   {
     final DatabaseReaderParameters params = getSystemParametersFromConfig(config, systemName);
 
-    try
-    {
+//    try
+//    {
       return new DatabaseReaderConsumer(systemName, OUTPUT_STREAM_NAME, params);
-    } catch (SQLException e)
-    {
-      e.printStackTrace();
-      return null;
-    } catch (ClassNotFoundException e)
-    {
-      e.printStackTrace();
-      return null;
-    }
+//    } catch (ClassNotFoundException e)
+//    {
+//      e.printStackTrace();
+//      return null;
+//    }
   }
 
   @Override

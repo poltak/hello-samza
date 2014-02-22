@@ -22,15 +22,17 @@ import org.apache.samza.Partition;
 import org.apache.samza.system.IncomingMessageEnvelope;
 import org.apache.samza.system.SystemStreamPartition;
 import org.apache.samza.util.BlockingEnvelopeMap;
+import samza.examples.databasereader.util.DatabaseConnectionMetaData;
 
 import java.sql.*;
 import java.util.Properties;
 
 public class DatabaseReaderConsumer extends BlockingEnvelopeMap
 {
-  private final Connection            databaseConnection;
-  private final Statement             statement;
-  private final SystemStreamPartition systemStreamPartition;
+//  private final Connection            databaseConnection;
+//  private final Statement             statement;
+  private final SystemStreamPartition       systemStreamPartition;
+  private final DatabaseConnectionMetaData  databaseConnectionMetaData;
 
   /**
    * Sets up the SystemConsumer for reading from the specified database.
@@ -41,7 +43,6 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
    */
   public DatabaseReaderConsumer(final String systemName, final String outputStreamName,
                                 final DatabaseReaderParameters parameters)
-      throws SQLException, ClassNotFoundException
   {
     this.systemStreamPartition = new SystemStreamPartition(systemName, outputStreamName, new Partition(0));
 
@@ -53,16 +54,18 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
         "/" + parameters.getDatabaseName();
 
     // Call to load JDBC driver
-    Class.forName(parameters.getDbmsType().getDriver());
+//    Class.forName(parameters.getDbmsType().getDriver());
 
     // Handle username and password parameters
     final Properties properties = new Properties();
     properties.put("user", parameters.getUsername());
     properties.put("password", parameters.getPassword());
 
+    databaseConnectionMetaData = new DatabaseConnectionMetaData(databaseUrl, parameters.getDbmsType().getDriver(),
+                                                                properties);
     // Make database connection and get statement
-    this.databaseConnection = DriverManager.getConnection(databaseUrl, properties);
-    this.statement = databaseConnection.createStatement();
+//    this.databaseConnection = DriverManager.getConnection(databaseUrl, properties);
+//    this.statement = databaseConnection.createStatement();
   }
 
   @Override
@@ -76,7 +79,7 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
   {
     try
     {
-      put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, statement));
+      put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, databaseConnectionMetaData));
     } catch (InterruptedException e)
     {
       e.printStackTrace();
@@ -87,12 +90,12 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
   @Override
   public void stop()
   {
-    try
-    {
-      databaseConnection.close();
-    } catch (SQLException e)
-    {
-      e.printStackTrace();
-    }
+//    try
+//    {
+//      databaseConnection.close();
+//    } catch (SQLException e)
+//    {
+//      e.printStackTrace();
+//    }
   }
 }

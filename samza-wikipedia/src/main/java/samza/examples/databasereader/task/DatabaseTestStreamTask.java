@@ -25,6 +25,8 @@ import org.apache.samza.task.MessageCollector;
 import org.apache.samza.task.StreamTask;
 import org.apache.samza.task.TaskCoordinator;
 
+import java.util.Map;
+
 public class DatabaseTestStreamTask implements StreamTask
 {
   private static final SystemStream OUTPUT_STREAM = new SystemStream("kafka", "dbtest");
@@ -33,6 +35,7 @@ public class DatabaseTestStreamTask implements StreamTask
   public void process(final IncomingMessageEnvelope incomingMessageEnvelope, final MessageCollector messageCollector,
                       final TaskCoordinator taskCoordinator) throws Exception
   {
+//    Map<String, Object> outgoingMap =
     messageCollector.send(new OutgoingMessageEnvelope(OUTPUT_STREAM, incomingMessageEnvelope.getMessage()));
   }
 }
