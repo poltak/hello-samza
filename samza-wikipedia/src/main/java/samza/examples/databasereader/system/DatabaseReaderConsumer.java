@@ -22,13 +22,11 @@ import org.apache.samza.Partition;
 import org.apache.samza.system.IncomingMessageEnvelope;
 import org.apache.samza.system.SystemStreamPartition;
 import org.apache.samza.util.BlockingEnvelopeMap;
-
-import java.sql.*;
-import java.util.Properties;
+import samza.examples.databasereader.util.DatabaseReaderParameters;
 
 public class DatabaseReaderConsumer extends BlockingEnvelopeMap
 {
-  private final SystemStreamPartition systemStreamPartition;
+  private final SystemStreamPartition    systemStreamPartition;
   private final DatabaseReaderParameters parameters;
 
   /**

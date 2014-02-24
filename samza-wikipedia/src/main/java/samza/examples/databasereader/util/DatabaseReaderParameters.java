@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package samza.examples.databasereader.system;
+package samza.examples.databasereader.util;
 
 import samza.examples.databasereader.util.InvalidSystemParametersException;
 import samza.examples.databasereader.util.SupportedDbmsTypes;

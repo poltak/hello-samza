@@ -26,9 +26,8 @@ import org.apache.samza.system.SystemConsumer;
 import org.apache.samza.system.SystemFactory;
 import org.apache.samza.system.SystemProducer;
 import org.apache.samza.util.SinglePartitionSystemAdmin;
+import samza.examples.databasereader.util.DatabaseReaderParameters;
 import samza.examples.databasereader.util.InvalidSystemParametersException;
-
-import java.sql.SQLException;
 
 public class DatabaseReaderSystemFactory implements SystemFactory
 {
