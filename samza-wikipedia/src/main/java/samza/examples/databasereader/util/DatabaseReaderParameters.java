@@ -16,15 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package samza.examples.databasereader.system;
+package samza.examples.databasereader.util;
 
 import samza.examples.databasereader.util.InvalidSystemParametersException;
 import samza.examples.databasereader.util.SupportedDbmsTypes;
 
+import java.io.Serializable;
+
 /**
  * Aggregate class containing user specified system parameters for the database connection.
  */
-public class DatabaseReaderParameters
+public class DatabaseReaderParameters implements Serializable
 {
   private static final int PORT_LOWER_BOUND = 1;
   private static final int PORT_UPPER_BOUND = 50000;
@@ -62,6 +64,14 @@ public class DatabaseReaderParameters
     this.password = password;
     this.dbmsType = SupportedDbmsTypes.getTypeFromString(dbmsType);
     this.databaseName = databaseName;
+  }
+
+  public String getUrl()
+  {
+    return  "jdbc:" + dbmsType.toString() +
+            "://" + host +
+            ":" + port +
+            "/" + databaseName;
   }
 
   public String getHost()

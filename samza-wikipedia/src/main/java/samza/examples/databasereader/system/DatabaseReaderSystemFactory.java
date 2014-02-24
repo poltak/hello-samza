@@ -26,9 +26,8 @@ import org.apache.samza.system.SystemConsumer;
 import org.apache.samza.system.SystemFactory;
 import org.apache.samza.system.SystemProducer;
 import org.apache.samza.util.SinglePartitionSystemAdmin;
+import samza.examples.databasereader.util.DatabaseReaderParameters;
 import samza.examples.databasereader.util.InvalidSystemParametersException;
-
-import java.sql.SQLException;
 
 public class DatabaseReaderSystemFactory implements SystemFactory
 {
@@ -42,14 +41,15 @@ public class DatabaseReaderSystemFactory implements SystemFactory
   {
     final DatabaseReaderParameters params = getSystemParametersFromConfig(config, systemName);
 
-//    try
-//    {
+    try
+    {
       return new DatabaseReaderConsumer(systemName, OUTPUT_STREAM_NAME, params);
-//    } catch (ClassNotFoundException e)
-//    {
-//      e.printStackTrace();
-//      return null;
-//    }
+    } catch (ClassNotFoundException e)
+    {
+      System.err.println("Exception encountered. Cannot load specified JDBC driver: " + params.getDbmsType().getDriver());
+      e.printStackTrace();
+      return null;
+    }
   }
 
   @Override
