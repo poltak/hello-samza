@@ -28,9 +28,8 @@ import java.util.Properties;
 
 public class DatabaseReaderConsumer extends BlockingEnvelopeMap
 {
-  private final Connection            databaseConnection;
-  private final Statement             statement;
   private final SystemStreamPartition systemStreamPartition;
+  private final DatabaseReaderParameters parameters;
 
   /**
    * Sets up the SystemConsumer for reading from the specified database.
@@ -41,28 +40,13 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
    */
   public DatabaseReaderConsumer(final String systemName, final String outputStreamName,
                                 final DatabaseReaderParameters parameters)
-      throws SQLException, ClassNotFoundException
+      throws ClassNotFoundException
   {
     this.systemStreamPartition = new SystemStreamPartition(systemName, outputStreamName, new Partition(0));
+    this.parameters = parameters;
 
-    // Formulate database URL from parameters
-    final String databaseUrl =
-        "jdbc:" + parameters.getDbmsType().toString() +
-        "://" + parameters.getHost() +
-        ":" + parameters.getPort() +
-        "/" + parameters.getDatabaseName();
-
-    // Call to load JDBC driver
+    // Call to test JDBC driver
     Class.forName(parameters.getDbmsType().getDriver());
-
-    // Handle username and password parameters
-    final Properties properties = new Properties();
-    properties.put("user", parameters.getUsername());
-    properties.put("password", parameters.getPassword());
-
-    // Make database connection and get statement
-    this.databaseConnection = DriverManager.getConnection(databaseUrl, properties);
-    this.statement = databaseConnection.createStatement();
   }
 
   @Override
@@ -76,7 +60,7 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
   {
     try
     {
-      put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, statement));
+      put(systemStreamPartition, new IncomingMessageEnvelope(systemStreamPartition, null, null, parameters));
     } catch (InterruptedException e)
     {
       e.printStackTrace();
@@ -87,12 +71,5 @@ public class DatabaseReaderConsumer extends BlockingEnvelopeMap
   @Override
   public void stop()
   {
-    try
-    {
-      databaseConnection.close();
-    } catch (SQLException e)
-    {
-      e.printStackTrace();
-    }
   }
 }

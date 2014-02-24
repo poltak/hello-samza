@@ -45,12 +45,9 @@ public class DatabaseReaderSystemFactory implements SystemFactory
     try
     {
       return new DatabaseReaderConsumer(systemName, OUTPUT_STREAM_NAME, params);
-    } catch (SQLException e)
-    {
-      e.printStackTrace();
-      return null;
     } catch (ClassNotFoundException e)
     {
+      System.err.println("Exception encountered. Cannot load specified JDBC driver: " + params.getDbmsType().getDriver());
       e.printStackTrace();
       return null;
     }
